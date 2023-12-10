@@ -10,6 +10,7 @@ public class ScoreManager : Singleton<ScoreManager>
     private AudioMixer audiomixer;
 
 
+
     [SerializeField]
     private Text scoreText, comboText;
 
@@ -19,6 +20,8 @@ public class ScoreManager : Singleton<ScoreManager>
     [SerializeField]
     private Image bottleFillImage;
 
+
+
     private int score, comboMultiplier;
     public int Score
     {
@@ -27,6 +30,8 @@ public class ScoreManager : Singleton<ScoreManager>
             return score;
         }
     }
+    private int bonusScore = 1000;
+
     [SerializeField]
     private float ComboLimitTime = 5;
     private float currentComboTime;
@@ -46,8 +51,10 @@ public class ScoreManager : Singleton<ScoreManager>
     [SerializeField]
     private Transform BottlePosition;
 
-    [SerializeField]
-    private ParticleSystem splat;
+    [SerializeField] private Animator bonusParticle;
+    [SerializeField] private ParticleSystem splat;
+    [SerializeField] private ParticleSystem bonusSplat;
+
 
 
     private void Start()
@@ -69,8 +76,10 @@ public class ScoreManager : Singleton<ScoreManager>
         splat.Play();
         if (bottleFillImage.fillAmount >= 1f)
         {
-            score += 1000;
+            score += bonusScore;
             bottleFillImage.fillAmount = 0f;
+            bonusParticle.Play("BonusParticle", -1, 0);
+            bonusSplat.Play();
         }
 
         timeSinceLastScore = 0;
